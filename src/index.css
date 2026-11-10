@@ -66,6 +66,12 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Trebuchet MS", serif;
   color: var(--color-primary);
+  line-height: 1.2;
+}
+
+h2 {
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -75,16 +81,145 @@ svg {
 
 main {
   display: grid;
-  grid-template-columns: 1fr min(816px, 100%) 1fr;
+  grid-template-columns: 1fr min(1024px, 100%) 1fr;
+  row-gap: 1rem;
+  padding: 2rem 1rem;
 }
 
 .wrapper {
   grid-column: 2;
-  padding: 2rem 0;
+
+  > section:not(:first-child) {
+    margin-top: 2rem;
+  }
+}
+
+.toolbar {
+  text-align: center;
 }
 
 .cv {
   padding: 2rem;
   background-color: var(--color-background);
   box-shadow: var(--shadow);
+}
+
+
+/* ---------- Identity ---------- */
+.identity {
+  text-align: center;
+
+  .identity-job {
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .contacts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    font-style: normal;
+    margin-top: 0.25rem;
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+
+/* ---------- Buttons ---------- */
+button {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
+}
+
+.section-button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+
+/* ---------- Form ---------- */
+form {
+  .form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+
+    &:focus-visible {
+      outline: 2px solid var(--color-secondary);
+      outline-offset: 0;
+      border-color: var(--color-primary);
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+
+    button {
+      width: 100%;
+    }
+
+    button[type='button'] {
+      background-color: transparent;
+      color: var(--color-primary);
+
+      &:hover {
+        background-color: var(--color-background-accent);
+        border-color: var(--color-primary);
+      }
+    }
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 768px) {
+  main {
+    padding: 2rem 0.25rem;
+  }
+
+  .cv {
+    padding: 1.75rem 1.5rem;
+  }
 }

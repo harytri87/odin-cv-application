@@ -1,28 +1,66 @@
+import { useState } from 'react'
+import initialIdentity from './data/identity'
+import FormIdentity from './components/identity/FormIdentity'
+import Identity from './components/identity/Identity'
+
 function App() {
+  const [identity, setIdentity] = useState(initialIdentity)
+  const [isPreview, setIsPreview] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+
+  function openForm(id) {
+    setEditingId(id)
+  }
+
+  function closeForm() {
+    setEditingId(null)
+  }
+
+  function handleTogglePreview() {
+    closeForm()
+    setIsPreview((prev) => !prev)
+  }
+
+  function handleIdentitySubmit(e) {
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
+
+    setIdentity({
+      name: data.get('name'),
+      job: data.get('job'),
+      contacts: {
+        phone: data.get('phone'),
+        email: data.get('email'),
+        address: data.get('address'),
+      },
+    })
+    closeForm()
+  }
+
   return (
-    <section className="wrapper">
-      <div className="cv">
-        <h1>Hello World!</h1>
-        <h2>Hello World!</h2>
-        <h3>Hello World!</h3>
-        <p>Hello World!</p>
-        <svg>
-          <use href="/icons.svg#call-icon"></use>
-        </svg>
-        <svg>
-          <use href="/icons.svg#mail-icon"></use>
-        </svg>
-        <svg>
-          <use href="/icons.svg#location-icon"></use>
-        </svg>
-        <svg>
-          <use href="/icons.svg#edit-icon"></use>
-        </svg>
-        <svg>
-          <use href="/icons.svg#delete-icon"></use>
-        </svg>
+    <main>
+      <div className="wrapper toolbar">
+        <button type="button" onClick={handleTogglePreview}>
+          {isPreview ? 'Edit' : 'Preview'}
+        </button>
       </div>
-    </section>
+
+      <div className="wrapper cv">
+        {editingId === 'identity' ? (
+          <FormIdentity
+            identity={identity}
+            onSubmit={handleIdentitySubmit}
+            onCancel={closeForm}
+          />
+        ) : (
+          <Identity
+            identity={identity}
+            showEditButton={!isPreview}
+            onEdit={() => openForm('identity')}
+          />
+        )}
+      </div>
+    </main>
   )
 }
 
