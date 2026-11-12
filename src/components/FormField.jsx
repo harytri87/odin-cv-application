@@ -1,12 +1,17 @@
 import { useId } from 'react'
 
-function FormField({ label, name, type = 'text', defaultValue }) {
+// props sisanya (defaultValue, required, dll.) diteruskan ke input/textarea
+function FormField({ label, name, type = 'text', multiline = false, ...props }) {
   const id = useId()
 
   return (
     <div className="form-input">
       <label htmlFor={id}>{label}</label>
-      <input type={type} id={id} name={name} defaultValue={defaultValue} />
+      {multiline ? (
+        <textarea id={id} name={name} rows={4} {...props} />
+      ) : (
+        <input type={type} id={id} name={name} {...props} />
+      )}
     </div>
   )
 }

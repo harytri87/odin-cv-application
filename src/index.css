@@ -70,6 +70,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
+  text-transform: uppercase;
   padding-bottom: 0.25rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
@@ -104,6 +105,11 @@ main {
   box-shadow: var(--shadow);
 }
 
+svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 
 /* ---------- Identity ---------- */
 .identity {
@@ -129,13 +135,48 @@ main {
     }
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
       flex-shrink: 0;
     }
   }
 }
 
+
+/* ---------- List sections (Experience, dst.) ---------- */
+.list-section {
+  .grid-wrapper:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .grid-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    column-gap: 1rem;
+    align-items: start;
+
+    .item-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .item-subtitle {
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-style: italic;
+      margin-bottom: 2px;
+    }
+
+    .dates-place {
+      vertical-align: top;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}
 
 /* ---------- Buttons ---------- */
 button {
@@ -163,6 +204,16 @@ button {
   margin-top: 1rem;
 }
 
+.transparent-button {
+  background-color: transparent;
+  color: var(--color-primary);
+
+  &:hover {
+    background-color: var(--color-background-accent);
+    border-color: var(--color-primary);
+  }
+}
+
 
 /* ---------- Form ---------- */
 form {
@@ -177,7 +228,8 @@ form {
     font-weight: 600;
   }
 
-  input {
+  input,
+  textarea {
     width: 100%;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--color-border);
@@ -192,6 +244,10 @@ form {
     }
   }
 
+  textarea {
+    resize: vertical;
+  }
+
   .form-buttons {
     display: flex;
     gap: 0.5rem;
@@ -200,18 +256,9 @@ form {
     button {
       width: 100%;
     }
-
-    button[type='button'] {
-      background-color: transparent;
-      color: var(--color-primary);
-
-      &:hover {
-        background-color: var(--color-background-accent);
-        border-color: var(--color-primary);
-      }
-    }
   }
 }
+
 
 /* ---------- Tablet ---------- */
 @media (max-width: 768px) {

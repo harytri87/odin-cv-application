@@ -11,8 +11,14 @@ function FormSection({ title, onSubmit, onCancel, children }) {
         {children}
 
         <div className="form-buttons">
-          <button type="submit">Save</button>
-          <button type="button" onClick={onCancel}>
+          <button className="transparent-button" type="submit">
+            Save
+          </button>
+          <button
+            className="transparent-button"
+            type="button"
+            onClick={onCancel}
+          >
             Cancel
           </button>
         </div>

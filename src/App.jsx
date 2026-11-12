@@ -1,19 +1,23 @@
 import { useState } from 'react'
 import initialIdentity from './data/identity'
+import initialExperiences from './data/experiences'
 import FormIdentity from './components/identity/FormIdentity'
 import Identity from './components/identity/Identity'
+import Experience from './components/experience/Experience'
+import FormExperience from './components/experience/FormExperience'
 
 function App() {
   const [identity, setIdentity] = useState(initialIdentity)
+  const [experiences, setExperiences] = useState(initialExperiences)
   const [isPreview, setIsPreview] = useState(false)
-  const [editingId, setEditingId] = useState(null)
+  const [editing, setEditing] = useState(null)
 
-  function openForm(id) {
-    setEditingId(id)
+  function openForm(section, id = null) {
+    setEditing({ section, id })
   }
 
   function closeForm() {
-    setEditingId(null)
+    setEditing(null)
   }
 
   function handleTogglePreview() {
@@ -37,6 +41,24 @@ function App() {
     closeForm()
   }
 
+  function handleExperienceSubmit(e) {
+    e.preventDefault()
+    const data = Object.fromEntries(new FormData(e.currentTarget))
+
+    if (editing.id === null) {
+      setExperiences((prev) => [...prev, { ...data, id: crypto.randomUUID() }])
+    } else {
+      setExperiences((prev) =>
+        prev.map((exp) => (exp.id === editing.id ? { ...exp, ...data } : exp)),
+      )
+    }
+    closeForm()
+  }
+
+  function handleExperienceDelete(id) {
+    setExperiences((prev) => prev.filter((exp) => exp.id !== id))
+  }
+
   return (
     <main>
       <div className="wrapper toolbar">
@@ -46,7 +68,7 @@ function App() {
       </div>
 
       <div className="wrapper cv">
-        {editingId === 'identity' ? (
+        {editing?.section === 'identity' ? (
           <FormIdentity
             identity={identity}
             onSubmit={handleIdentitySubmit}
@@ -57,6 +79,24 @@ function App() {
             identity={identity}
             showEditButton={!isPreview}
             onEdit={() => openForm('identity')}
+          />
+        )}
+
+        {editing?.section === 'experience' ? (
+          <FormExperience
+            experience={
+              experiences.find((exp) => exp.id === editing.id) ?? null
+            }
+            onSubmit={handleExperienceSubmit}
+            onCancel={closeForm}
+          />
+        ) : (
+          <Experience
+            experiences={experiences}
+            showEditButton={!isPreview}
+            onAdd={() => openForm('experience')}
+            onEdit={(id) => openForm('experience', id)}
+            onDelete={handleExperienceDelete}
           />
         )}
       </div>
