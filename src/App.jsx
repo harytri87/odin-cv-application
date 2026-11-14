@@ -3,6 +3,7 @@ import initialIdentity from './data/identity'
 import initialExperiences from './data/experiences'
 import initialEducations from './data/education'
 import initialProjects from './data/project'
+import initialSkills from './data/skill'
 import FormIdentity from './components/identity/FormIdentity'
 import Identity from './components/identity/Identity'
 import Experience from './components/experience/Experience'
@@ -11,12 +12,15 @@ import Education from './components/education/Education'
 import FormEducation from './components/education/FormEducation'
 import Project from './components/project/Project'
 import FormProject from './components/project/FormProject'
+import Skill from './components/skill/Skill'
+import FormSkill from './components/skill/FormSkill'
 
 function App() {
   const [identity, setIdentity] = useState(initialIdentity)
   const [experiences, setExperiences] = useState(initialExperiences)
   const [educations, setEducations] = useState(initialEducations)
   const [projects, setProjects] = useState(initialProjects)
+  const [skills, setSkills] = useState(initialSkills)
   const [isPreview, setIsPreview] = useState(false)
   const [editing, setEditing] = useState(null)
 
@@ -70,6 +74,14 @@ function App() {
     }
 
     return { handleSubmit, handleDelete }
+  }
+
+  function handleSkillSubmit(e) {
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
+
+    setSkills(data.get('skill'))
+    closeForm()
   }
 
   const experienceHandlers = makeListHandlers(setExperiences)
@@ -148,6 +160,20 @@ function App() {
             onAdd={() => openForm('project')}
             onEdit={(id) => openForm('project', id)}
             onDelete={projectHandlers.handleDelete}
+          />
+        )}
+
+        {editing?.section === 'skill' ? (
+          <FormSkill
+            skill={skills}
+            onSubmit={handleSkillSubmit}
+            onCancel={closeForm}
+          />
+        ) : (
+          <Skill
+            skill={skills}
+            showEditButton={!isPreview}
+            onEdit={() => openForm('skill')}
           />
         )}
       </div>
