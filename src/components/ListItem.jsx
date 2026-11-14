@@ -20,38 +20,42 @@ function ListItem({
       </div>
 
       <div className="dates-location">
-        {startDate && (
-          <span>
-            {`${formatDate(startDate)} - ${endDate ? formatDate(endDate) : 'Present'}`}
-          </span>
-        )}
-        {location && <address>{location}</address>}
-      </div>
-
-      {showActions && (
-        <div className="action-buttons">
-          <button
-            className="transparent-button"
-            type="button"
-            aria-label={`Edit ${title}`}
-            onClick={onEdit}
-          >
-            <svg aria-hidden="true">
-              <use href="/icons.svg#edit-icon" />
-            </svg>
-          </button>
-          <button
-            className="transparent-button"
-            type="button"
-            aria-label={`Delete ${title}`}
-            onClick={onDelete}
-          >
-            <svg aria-hidden="true">
-              <use href="/icons.svg#delete-icon" />
-            </svg>
-          </button>
+        <div>
+          {startDate && (
+            <span>
+              {`${formatDate(startDate)} - ${endDate ? formatDate(endDate) : 'Present'}`}
+            </span>
+          )}
+          {location && <address>{location}</address>}
         </div>
-      )}
+
+        {showActions && (
+          <div className="action-buttons">
+            <button
+              className="transparent-button"
+              type="button"
+              aria-label={`Edit ${title}`}
+              title="Edit"
+              onClick={onEdit}
+            >
+              <svg aria-hidden="true">
+                <use href="/icons.svg#edit-icon" />
+              </svg>
+            </button>
+            <button
+              className="transparent-button"
+              type="button"
+              aria-label={`Delete ${title}`}
+              title="Delete"
+              onClick={onDelete}
+            >
+              <svg aria-hidden="true">
+                <use href="/icons.svg#delete-icon" />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
