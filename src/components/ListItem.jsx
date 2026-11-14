@@ -39,7 +39,7 @@ function ListItem({
               onClick={onEdit}
             >
               <svg aria-hidden="true">
-                <use href="/icons.svg#edit-icon" />
+                <use href={`${import.meta.env.BASE_URL}icons.svg#edit-icon`} />
               </svg>
             </button>
             <button
@@ -50,7 +50,9 @@ function ListItem({
               onClick={onDelete}
             >
               <svg aria-hidden="true">
-                <use href="/icons.svg#delete-icon" />
+                <use
+                  href={`${import.meta.env.BASE_URL}icons.svg#delete-icon`}
+                />
               </svg>
             </button>
           </div>

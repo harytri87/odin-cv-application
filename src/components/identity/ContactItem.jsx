@@ -2,7 +2,7 @@ function ContactItem({ icon, children }) {
   return (
     <div>
       <svg aria-hidden="true">
-        <use href={`/icons.svg#${icon}`} />
+        <use href={`${import.meta.env.BASE_URL}icons.svg#${icon}`} />
       </svg>
       <span>{children}</span>
     </div>
