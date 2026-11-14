@@ -2,17 +2,21 @@ import { useState } from 'react'
 import initialIdentity from './data/identity'
 import initialExperiences from './data/experiences'
 import initialEducations from './data/education'
+import initialProjects from './data/project'
 import FormIdentity from './components/identity/FormIdentity'
 import Identity from './components/identity/Identity'
 import Experience from './components/experience/Experience'
 import FormExperience from './components/experience/FormExperience'
 import Education from './components/education/Education'
 import FormEducation from './components/education/FormEducation'
+import Project from './components/project/Project'
+import FormProject from './components/project/FormProject'
 
 function App() {
   const [identity, setIdentity] = useState(initialIdentity)
   const [experiences, setExperiences] = useState(initialExperiences)
   const [educations, setEducations] = useState(initialEducations)
+  const [projects, setProjects] = useState(initialProjects)
   const [isPreview, setIsPreview] = useState(false)
   const [editing, setEditing] = useState(null)
 
@@ -70,6 +74,7 @@ function App() {
 
   const experienceHandlers = makeListHandlers(setExperiences)
   const educationHandlers = makeListHandlers(setEducations)
+  const projectHandlers = makeListHandlers(setProjects)
 
   return (
     <main>
@@ -127,6 +132,22 @@ function App() {
             onAdd={() => openForm('education')}
             onEdit={(id) => openForm('education', id)}
             onDelete={educationHandlers.handleDelete}
+          />
+        )}
+
+        {editing?.section === 'project' ? (
+          <FormProject
+            project={projects.find((item) => item.id === editing.id) ?? null}
+            onSubmit={projectHandlers.handleSubmit}
+            onCancel={closeForm}
+          />
+        ) : (
+          <Project
+            projects={projects}
+            showEditButton={!isPreview}
+            onAdd={() => openForm('project')}
+            onEdit={(id) => openForm('project', id)}
+            onDelete={projectHandlers.handleDelete}
           />
         )}
       </div>
