@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import initialIdentity from './data/identity'
 import initialExperiences from './data/experiences'
+import initialEducations from './data/education'
 import FormIdentity from './components/identity/FormIdentity'
 import Identity from './components/identity/Identity'
 import Experience from './components/experience/Experience'
 import FormExperience from './components/experience/FormExperience'
+import Education from './components/education/Education'
+import FormEducation from './components/education/FormEducation'
 
 function App() {
   const [identity, setIdentity] = useState(initialIdentity)
   const [experiences, setExperiences] = useState(initialExperiences)
+  const [educations, setEducations] = useState(initialEducations)
   const [isPreview, setIsPreview] = useState(false)
   const [editing, setEditing] = useState(null)
 
@@ -41,23 +45,31 @@ function App() {
     closeForm()
   }
 
-  function handleExperienceSubmit(e) {
-    e.preventDefault()
-    const data = Object.fromEntries(new FormData(e.currentTarget))
+  function makeListHandlers(setItems) {
+    function handleSubmit(e) {
+      e.preventDefault()
+      const data = Object.fromEntries(new FormData(e.currentTarget))
+      const { id } = editing
 
-    if (editing.id === null) {
-      setExperiences((prev) => [...prev, { ...data, id: crypto.randomUUID() }])
-    } else {
-      setExperiences((prev) =>
-        prev.map((exp) => (exp.id === editing.id ? { ...exp, ...data } : exp)),
-      )
+      if (id === null) {
+        setItems((prev) => [...prev, { ...data, id: crypto.randomUUID() }])
+      } else {
+        setItems((prev) =>
+          prev.map((item) => (item.id === id ? { ...item, ...data } : item)),
+        )
+      }
+      closeForm()
     }
-    closeForm()
+
+    function handleDelete(id) {
+      setItems((prev) => prev.filter((item) => item.id !== id))
+    }
+
+    return { handleSubmit, handleDelete }
   }
 
-  function handleExperienceDelete(id) {
-    setExperiences((prev) => prev.filter((exp) => exp.id !== id))
-  }
+  const experienceHandlers = makeListHandlers(setExperiences)
+  const educationHandlers = makeListHandlers(setEducations)
 
   return (
     <main>
@@ -85,9 +97,9 @@ function App() {
         {editing?.section === 'experience' ? (
           <FormExperience
             experience={
-              experiences.find((exp) => exp.id === editing.id) ?? null
+              experiences.find((item) => item.id === editing.id) ?? null
             }
-            onSubmit={handleExperienceSubmit}
+            onSubmit={experienceHandlers.handleSubmit}
             onCancel={closeForm}
           />
         ) : (
@@ -96,7 +108,25 @@ function App() {
             showEditButton={!isPreview}
             onAdd={() => openForm('experience')}
             onEdit={(id) => openForm('experience', id)}
-            onDelete={handleExperienceDelete}
+            onDelete={experienceHandlers.handleDelete}
+          />
+        )}
+
+        {editing?.section === 'education' ? (
+          <FormEducation
+            education={
+              educations.find((item) => item.id === editing.id) ?? null
+            }
+            onSubmit={educationHandlers.handleSubmit}
+            onCancel={closeForm}
+          />
+        ) : (
+          <Education
+            educations={educations}
+            showEditButton={!isPreview}
+            onAdd={() => openForm('education')}
+            onEdit={(id) => openForm('education', id)}
+            onDelete={educationHandlers.handleDelete}
           />
         )}
       </div>
